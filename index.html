@@ -6,144 +6,312 @@
     <title>ZYNC | Sync Your Vision</title>
     <meta name="theme-color" content="#020617">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
         
+        /* THEME VARIABLES (CYAN DEFAULT) */
+        :root {
+            --zync-primary: #06b6d4; /* cyan-500 */
+            --zync-glow: rgba(34, 211, 238, 0.5);
+            --zync-gradient: linear-gradient(45deg, #06b6d4, #10b981, #3b82f6);
+        }
+
+        /* MATRIX GREEN THEME */
+        body.theme-matrix {
+            --zync-primary: #10b981; /* emerald-500 */
+            --zync-glow: rgba(16, 185, 129, 0.5);
+            --zync-gradient: linear-gradient(45deg, #059669, #10b981, #34d399);
+        }
+
+        /* BLAZE ORANGE THEME */
+        body.theme-blaze {
+            --zync-primary: #f97316; /* orange-500 */
+            --zync-glow: rgba(249, 115, 22, 0.5);
+            --zync-gradient: linear-gradient(45deg, #ea580c, #f97316, #fb923c);
+        }
+
         body { font-family: 'Inter', sans-serif; background-color: #020617; color: #f8fafc; -webkit-tap-highlight-color: transparent; overflow-x: hidden; }
         
-        .page { display: none; animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); } 
+        .page { display: none; animation: fadeIn 0.3s ease; } 
         .page.active { display: block; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .glass-nav-top { background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.08); }
-        .glass-nav-bottom { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(25px); border-top: 1px solid rgba(255,255,255,0.1); }
+        .glass-nav-top { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .glass-nav-bottom { background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(25px); border-top: 1px solid rgba(255,255,255,0.1); }
         
         ::-webkit-scrollbar { display: none; }
-        .nav-item { color: #475569; transition: 0.3s; }
-        .nav-item.active { color: #22d3ee; transform: scale(1.1); }
+        .nav-item { color: #475569; transition: 0.2s; }
+        .nav-item.active { color: #f8fafc; transform: scale(1.1); }
         
-        .post-card { border-bottom: 1px solid rgba(255,255,255,0.03); transition: 0.3s; background: linear-gradient(180deg, transparent, rgba(34, 211, 238, 0.02) 100%); position: relative; overflow: hidden; }
-        .brand-glow { text-shadow: 0 0 20px rgba(34, 211, 238, 0.5); }
+        .brand-glow { text-shadow: 0 0 20px var(--zync-glow); color: var(--zync-primary) !important; }
         
-        /* PARTICLE AURA */
-        @keyframes auraFloat { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 50% { opacity: 0.5; } 100% { transform: translateY(-100px) rotate(360deg); opacity: 0; } }
-        .aura-particle { position: absolute; width: 4px; height: 4px; background: #22d3ee; border-radius: 50%; pointer-events: none; animation: auraFloat 3s linear infinite; }
-
-        /* DOUBLE TAP HEART */
+        /* Dynamic Themed Elements */
+        .dynamic-text { color: var(--zync-primary) !important; }
+        .dynamic-bg { background-color: var(--zync-primary) !important; }
+        .dynamic-border { border-color: var(--zync-primary) !important; }
+        .zync-ring-active { background: var(--zync-gradient); padding: 2.5px; border-radius: 50%; }
+        
+        /* Heart Animations */
         @keyframes heartBurst { 0% { transform: translate(-50%, -50%) scale(0); opacity: 0; } 50% { transform: translate(-50%, -50%) scale(1.4); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 0; } }
-        .center-heart { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 80px; color: #f43f5e; opacity: 0; pointer-events: none; z-index: 100; text-shadow: 0 0 30px rgba(244, 63, 94, 0.5); }
-        .animate-burst { animation: heartBurst 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .center-heart { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 100px; color: #f43f5e; opacity: 0; pointer-events: none; z-index: 100; filter: drop-shadow(0 0 20px rgba(244,63,94,0.6)); }
+        .animate-burst { animation: heartBurst 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .is-liked { color: #f43f5e !important; }
+        .is-saved { color: #eab308 !important; }
         
-        .is-liked { color: #f43f5e !important; text-shadow: 0 0 10px rgba(244, 63, 94, 0.4); }
-        .verified-badge { color: #3b82f6; font-size: 10px; margin-left: 2px; }
-        
-        /* TERMINAL STYLE */
-        .terminal-box { font-family: 'Fira Code', monospace; font-size: 9px; background: rgba(0,0,0,0.5); border: 1px solid rgba(34, 211, 238, 0.2); padding: 10px; border-radius: 12px; color: #22d3ee; }
-        .rank-badge { background: linear-gradient(90deg, #06b6d4, #3b82f6); color: #020617; font-size: 8px; font-weight: 900; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px; }
+        .verified-badge { color: #3b82f6; font-size: 11px; margin-left: 4px; }
+        input, textarea { background: rgba(30, 41, 59, 0.5) !important; border: 1px solid rgba(255,255,255,0.05) !important; color: white !important; }
 
-        /* SMART TAG */
-        .smart-tag { color: #22d3ee; font-weight: 800; text-decoration: underline; }
+        /* IG Grid View */
+        .grid-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+        .grid-item { aspect-ratio: 1 / 1; background-color: #1e293b; overflow: hidden; position: relative; cursor: pointer; }
+        .grid-item img, .grid-item video { width: 100%; height: 100%; object-fit: cover; }
+        
+        /* Reels Snap Scroll */
+        .reels-container { height: calc(100vh - 50px); overflow-y: scroll; scroll-snap-type: y mandatory; }
+        .reel-item { height: 100%; scroll-snap-align: start; position: relative; background: #000; display: flex; justify-content: center; align-items: center; }
+        
+        /* Bottom Sheet Comments */
+        #comment-modal { position: fixed; bottom: -100%; left: 0; right: 0; height: 75vh; background: #0f172a; border-radius: 20px 20px 0 0; z-index: 9999; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 -10px 40px rgba(0,0,0,0.5); border-top: 1px solid var(--zync-glow); display: flex; flex-col; }
+        #comment-modal.open { bottom: 0; }
+        
+        /* Aura Particles */
+        @keyframes auraFloat { 0% { transform: translateY(0) scale(1); opacity: 0; } 50% { opacity: 0.8; } 100% { transform: translateY(-120px) scale(0.5); opacity: 0; } }
+        .aura-particle { position: absolute; width: 5px; height: 5px; background: var(--zync-primary); border-radius: 50%; pointer-events: none; animation: auraFloat 3s infinite ease-in; box-shadow: 0 0 8px var(--zync-primary); }
+        .smart-tag { color: var(--zync-primary); cursor: pointer; font-weight: bold; }
+        .smart-link { color: #3b82f6; text-decoration: underline; text-underline-offset: 2px; font-weight: bold; }
+        
+        /* Toggle Switch for Settings */
+        .toggle-checkbox:checked { right: 0; border-color: var(--zync-primary); }
+        .toggle-checkbox:checked + .toggle-label { background-color: var(--zync-primary); }
     </style>
 </head>
-<body class="selection:bg-cyan-500/30">
+<body>
 
-    <div id="p-auth" class="page active min-h-screen flex flex-col items-center justify-center px-8 text-center">
-        <div class="mb-12" id="auth-logo">
-            <div class="w-20 h-20 rounded-[2.5rem] bg-gradient-to-tr from-cyan-500 to-emerald-500 flex items-center justify-center text-white text-4xl font-black shadow-2xl mx-auto mb-6">
+    <div id="comment-modal" class="flex flex-col">
+        <div class="flex justify-between items-center p-4 border-b border-white/10">
+            <h3 class="font-bold text-sm text-center flex-1">Komentar</h3>
+            <button onclick="closeComments()" class="text-slate-400 absolute right-4"><i class="fas fa-times text-xl"></i></button>
+        </div>
+        <div id="comment-list" class="flex-1 overflow-y-auto p-4 space-y-4"></div>
+        <div class="p-3 border-t border-white/10 flex gap-3 items-center bg-[#020617]">
+            <img id="my-comment-avatar" src="" class="w-8 h-8 rounded-full">
+            <input type="text" id="comment-input" placeholder="Tambahkan komentar neural..." class="flex-1 bg-transparent border-none text-sm outline-none">
+            <button onclick="postComment()" class="dynamic-text font-bold text-sm px-2">Kirim</button>
+        </div>
+    </div>
+
+    <div id="p-auth" class="page active min-h-screen flex flex-col items-center justify-center px-8 text-center relative overflow-hidden">
+        <div class="mb-10 relative z-10" id="auth-logo">
+            <div class="w-24 h-24 rounded-full dynamic-bg flex items-center justify-center text-white text-5xl font-black shadow-[0_0_40px_var(--zync-glow)] mx-auto mb-6 border-4 border-[#020617] bg-gradient-to-tr from-cyan-500 to-emerald-500" id="auth-finger-bg">
                 <i class="fas fa-fingerprint"></i>
             </div>
-            <h1 class="text-4xl font-black tracking-[0.25em] brand-glow text-cyan-400 uppercase">ZYNC</h1>
+            <h1 class="text-4xl font-black tracking-[0.25em] brand-glow uppercase">ZYNC</h1>
         </div>
-        <div class="w-full max-w-sm bg-slate-900/40 backdrop-blur-2xl rounded-[3rem] p-10 border border-white/5">
-            <h2 id="auth-title" class="text-2xl font-black mb-8 text-white/90">Identity Lock</h2>
-            <div class="space-y-5">
-                <div id="div-user" class="hidden"><input type="text" id="auth-user" placeholder="Create Identity" class="w-full rounded-2xl px-6 py-4 text-sm outline-none bg-slate-800 border-white/5"></div>
-                <input type="email" id="auth-email" placeholder="Email Node" class="w-full rounded-2xl px-6 py-4 text-sm outline-none bg-slate-800 border-white/5 text-white">
-                <input type="password" id="auth-pass" placeholder="Access Code" class="w-full rounded-2xl px-6 py-4 text-sm outline-none bg-slate-800 border-white/5 text-white">
-                <button onclick="handleAuth()" id="auth-btn" class="w-full bg-gradient-to-r from-cyan-500 to-emerald-500 py-5 rounded-2xl font-black text-slate-950 text-xs uppercase tracking-[0.2em] mt-4 shadow-xl active:scale-95 transition-all">Initialize</button>
+        <div class="w-full max-w-sm bg-slate-900/60 backdrop-blur-3xl rounded-[2.5rem] p-8 border border-white/10 relative z-10 shadow-2xl">
+            <h2 id="auth-title" class="text-xl font-bold mb-6 text-white/90">Login ke Matrix</h2>
+            <div class="space-y-4">
+                <div id="div-user" class="hidden"><input type="text" id="auth-user" placeholder="Username" class="w-full rounded-xl px-5 py-3.5 text-sm outline-none"></div>
+                <input type="email" id="auth-email" placeholder="Email" class="w-full rounded-xl px-5 py-3.5 text-sm outline-none">
+                <input type="password" id="auth-pass" placeholder="Password" class="w-full rounded-xl px-5 py-3.5 text-sm outline-none">
+                <button onclick="handleAuth()" id="auth-btn" class="w-full dynamic-bg py-3.5 rounded-xl font-black text-[#020617] text-sm mt-2 transition-all">Log In</button>
             </div>
-            <p class="text-center mt-10 text-[11px] text-slate-500 font-bold uppercase tracking-widest">
-                <span id="auth-toggle-txt">New Node?</span> 
-                <span onclick="toggleAuth()" id="auth-toggle-btn" class="text-cyan-400 cursor-pointer ml-1 underline">Generate</span>
-            </p>
+            <div class="mt-6 flex items-center justify-center gap-2 text-xs text-slate-400">
+                <span id="auth-toggle-txt">Belum punya akun?</span>
+                <button onclick="toggleAuth()" id="auth-toggle-btn" class="dynamic-text font-bold">Daftar</button>
+            </div>
         </div>
     </div>
 
     <div id="main-app" class="hidden">
-        <header class="glass-nav-top fixed top-0 left-0 right-0 z-50 px-5 py-4 flex justify-between items-center">
-            <h1 class="text-2xl font-black tracking-tighter text-white brand-glow">Z<span class="text-cyan-400">Y</span>NC</h1>
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-2xl border-2 border-cyan-500/30 p-0.5 overflow-hidden" onclick="bukaTab('profile')">
-                    <img id="my-avatar" src="" class="w-full h-full object-cover rounded-[0.6rem]">
-                </div>
+        
+        <header id="main-header" class="glass-nav-top fixed top-0 left-0 right-0 z-50 px-4 py-2 flex justify-between items-center h-14">
+            <h1 class="text-2xl font-black tracking-tighter text-white brand-glow">Z<span class="dynamic-text">Y</span>NC</h1>
+            <div class="flex items-center gap-5 text-2xl text-white">
+                <i class="far fa-heart hover:text-cyan-400 transition-colors" onclick="bukaTab('notif')"></i>
+                <i class="fab fa-facebook-messenger hover:text-cyan-400 transition-colors" onclick="alert('Neural DM System: Enkripsi Sedang Dibangun.')"></i>
             </div>
         </header>
 
-        <main id="p-home" class="page pt-20 pb-28">
+        <main id="p-home" class="page pt-14 pb-16">
+            <div class="flex gap-4 overflow-x-auto px-4 py-3 border-b border-white/5 no-scrollbar">
+                <div class="flex flex-col items-center gap-1 shrink-0 relative">
+                    <img id="my-story-avatar" src="" class="w-16 h-16 rounded-full border-2 border-[#020617] bg-slate-800 object-cover">
+                    <div class="absolute bottom-4 right-0 dynamic-bg rounded-full w-5 h-5 flex items-center justify-center border-2 border-[#020617]"><i class="fas fa-plus text-[10px] text-black"></i></div>
+                    <span class="text-[10px] text-slate-400">Cerita Anda</span>
+                </div>
+                <div id="story-list" class="flex gap-4"></div>
+            </div>
             <div id="feed-container" class="flex flex-col"></div>
         </main>
 
-        <main id="p-post" class="page pt-20 px-6">
-            <div class="flex justify-between items-center py-4 mb-4">
-                <button onclick="bukaTab('home')" class="text-slate-500 font-black text-xs uppercase tracking-widest">Abort</button>
-                <button onclick="kirimPost()" class="bg-cyan-500 text-slate-900 px-8 py-2.5 rounded-2xl font-black text-xs uppercase tracking-[0.15em] shadow-lg">Broadcast</button>
-            </div>
-            <textarea id="post-content" rows="6" placeholder="Broadcast your vision..." class="w-full bg-transparent border-none p-0 text-xl font-medium outline-none resize-none placeholder-slate-800 text-white"></textarea>
-            <input type="text" id="post-img" placeholder="Media URL (Optional)..." class="w-full bg-slate-800 rounded-2xl px-4 py-4 text-xs mt-4 text-white">
-        </main>
-
-        <main id="p-profile" class="page pt-20 text-center">
-            <div id="aura-container" class="h-40 bg-gradient-to-br from-slate-800 via-cyan-950 to-emerald-950 mx-5 rounded-[2.5rem] mt-4 shadow-2xl relative overflow-hidden">
+        <main id="p-explore" class="page pt-14 pb-16">
+            <div class="p-2">
+                <div class="bg-slate-800 rounded-lg flex items-center px-3 py-2 mb-2">
+                    <i class="fas fa-search text-slate-400 text-sm"></i>
+                    <input type="text" placeholder="Cari Anomali Matrix..." class="w-full bg-transparent border-none outline-none text-sm ml-2 p-0 text-white">
                 </div>
-            <div class="px-8 -mt-16 flex flex-col items-center relative z-10">
-                <img id="prof-avatar" src="" class="w-32 h-32 rounded-[2.5rem] border-[6px] border-[#020617] bg-slate-800 shadow-2xl">
-                <div class="mt-4 flex items-center gap-2">
-                    <h1 id="prof-name" class="text-3xl font-black text-white"></h1>
-                    <span id="rank-name" class="rank-badge">Sentinel</span>
-                </div>
-                <p id="prof-user" class="text-cyan-400 font-bold tracking-wide mt-1"></p>
-                <div class="terminal-box w-full mt-6 text-left">
-                    <p class="animate-pulse">> STATUS: SYNC_SUCCESS</p>
-                    <p>> NEURAL_AURA: <span id="aura-val" class="font-bold">0</span> PT</p>
-                    <p>> NODE_SYNC: <span id="clock-val">00:00</span></p>
-                </div>
-                <button onclick="logout()" class="mt-12 w-full max-w-xs bg-rose-500/10 text-rose-500 py-4 rounded-[1.5rem] text-[10px] font-black uppercase tracking-[0.2em] border border-rose-500/20">Purge Session</button>
+                <div id="explore-grid" class="grid-container"></div>
             </div>
         </main>
 
-        <nav class="glass-nav-bottom fixed bottom-8 left-6 right-6 h-20 rounded-[2rem] flex justify-around items-center z-50 px-4">
-            <button class="nav-item active text-2xl" onclick="playSfx(); bukaTab('home')" id="nav-home"><i class="fas fa-microchip"></i></button>
-            <button class="nav-item text-3xl bg-white text-slate-950 w-16 h-12 rounded-[1.2rem] flex items-center justify-center shadow-2xl" onclick="playSfx(); bukaTab('post')"><i class="fas fa-add"></i></button>
-            <button class="nav-item text-2xl" onclick="playSfx(); bukaTab('profile')" id="nav-profile"><i class="fas fa-brain"></i></button>
+        <main id="p-reels" class="page pt-0 pb-12 bg-black h-screen">
+            <div id="reels-container" class="reels-container"></div>
+        </main>
+
+        <main id="p-post" class="page pt-14 px-4 pb-16">
+            <div class="flex justify-between items-center py-2 border-b border-white/10 mb-4">
+                <button onclick="bukaTab('home')" class="text-white text-lg"><i class="fas fa-times"></i></button>
+                <h2 class="font-bold text-sm">Transmisi Baru</h2>
+                <button onclick="kirimPost()" class="dynamic-text font-bold text-sm">Broadcast</button>
+            </div>
+            <div class="flex gap-3">
+                <img id="post-my-avatar" src="" class="w-10 h-10 rounded-full object-cover">
+                <textarea id="post-content" rows="4" placeholder="Tulis baris kode kehidupanmu..." class="w-full bg-transparent border-none p-0 text-sm outline-none resize-none text-white"></textarea>
+            </div>
+            <div class="mt-4">
+                <input type="text" id="post-img" placeholder="Masukkan URL Media (Opsional)" class="w-full bg-slate-900 rounded-lg px-3 py-3 text-xs outline-none border border-white/5 text-white">
+                <p class="text-[10px] text-slate-500 mt-2">Tips: Gunakan # untuk Smart Tag dan http:// untuk Hyper-Link otomatis.</p>
+            </div>
+        </main>
+
+        <main id="p-profile" class="page pt-14 pb-16">
+            <div class="px-4 pt-4 relative">
+                <div id="aura-container" class="absolute inset-0 overflow-hidden pointer-events-none -z-10 opacity-30"></div>
+                <div class="flex justify-between items-center">
+                    <h2 class="font-bold text-xl flex items-center gap-1" id="prof-header-name"></h2>
+                    <div class="flex gap-4 text-xl">
+                        <i class="far fa-plus-square hover:text-cyan-400" onclick="bukaTab('post')"></i>
+                        <i class="fas fa-bars hover:text-cyan-400" onclick="bukaTab('settings')"></i>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-6 mt-6">
+                    <div class="w-20 h-20 rounded-full zync-ring-active relative" onclick="playSfx('pulse')">
+                        <img id="prof-avatar" src="" class="w-full h-full rounded-full border-2 border-[#020617] object-cover">
+                    </div>
+                    <div class="flex-1 flex justify-around text-center">
+                        <div><p class="font-bold text-lg" id="stat-posts">0</p><p class="text-[11px] text-slate-400">Postingan</p></div>
+                        <div><p class="font-bold text-lg" id="stat-followers">1</p><p class="text-[11px] text-slate-400">Pengikut</p></div>
+                        <div><p class="font-bold text-lg">245</p><p class="text-[11px] text-slate-400">Mengikuti</p></div>
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <p class="font-bold text-sm text-white" id="prof-name"></p>
+                    <p class="text-sm text-slate-300 mt-0.5" id="prof-bio">Membangun ekosistem sosial tanpa batas. 💻⚡</p>
+                    <p class="text-[11px] font-mono mt-1 text-slate-500">> AURA_LEVEL: <span id="aura-val" class="font-bold dynamic-text">0</span> PT</p>
+                </div>
+
+                <div class="flex gap-2 mt-4">
+                    <button onclick="bukaTab('settings')" class="flex-1 bg-slate-800 text-white font-bold text-sm py-1.5 rounded-lg border border-white/5 hover:bg-slate-700">Edit System</button>
+                    <button onclick="alert('Link Profil Disalin ke Clipboard Neural!')" class="flex-1 bg-slate-800 text-white font-bold text-sm py-1.5 rounded-lg border border-white/5 hover:bg-slate-700">Share Node</button>
+                </div>
+            </div>
+
+            <div class="flex mt-6 border-t border-white/10">
+                <button class="flex-1 py-3 text-center border-b-2 border-white text-white"><i class="fas fa-th"></i></button>
+                <button class="flex-1 py-3 text-center text-slate-500"><i class="fas fa-play"></i></button>
+                <button class="flex-1 py-3 text-center text-slate-500"><i class="far fa-bookmark"></i></button>
+            </div>
+            <div id="profile-grid" class="grid-container"></div>
+        </main>
+
+        <main id="p-notif" class="page pt-14 pb-16 px-4">
+            <h2 class="font-bold text-xl mb-4 mt-2">Activity Radar</h2>
+            <p class="text-sm font-bold text-slate-400 mb-3">Hari Ini</p>
+            <div id="notif-container" class="space-y-4">
+                </div>
+        </main>
+
+        <main id="p-settings" class="page pt-14 pb-16 px-4">
+            <div class="flex items-center gap-3 mb-6 mt-2 border-b border-white/10 pb-4">
+                <i class="fas fa-arrow-left text-xl cursor-pointer" onclick="bukaTab('profile')"></i>
+                <h2 class="font-black text-xl tracking-widest uppercase brand-glow">System Config</h2>
+            </div>
+            
+            <div class="space-y-6">
+                <div class="bg-slate-900/80 p-4 rounded-2xl border border-white/5">
+                    <h3 class="text-xs font-black uppercase tracking-widest text-slate-500 mb-4">Identity Matrix</h3>
+                    <label class="text-[10px] uppercase font-bold text-slate-400">Bio / Slogan</label>
+                    <textarea id="setting-bio" rows="2" class="w-full bg-slate-800 rounded-lg p-3 text-sm mt-1 mb-2"></textarea>
+                    <button onclick="saveSettings()" class="dynamic-bg text-[#020617] font-bold text-xs px-4 py-2 rounded-lg mt-2">Save Matrix</button>
+                </div>
+
+                <div class="bg-slate-900/80 p-4 rounded-2xl border border-white/5">
+                    <h3 class="text-xs font-black uppercase tracking-widest text-slate-500 mb-4">UI Core Engine</h3>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button onclick="changeTheme('default')" class="bg-[#06b6d4] text-black font-bold text-[10px] py-3 rounded-lg border-2 border-transparent focus:border-white">CYAN DEFAULT</button>
+                        <button onclick="changeTheme('matrix')" class="bg-[#10b981] text-black font-bold text-[10px] py-3 rounded-lg border-2 border-transparent focus:border-white">MATRIX GREEN</button>
+                        <button onclick="changeTheme('blaze')" class="bg-[#f97316] text-black font-bold text-[10px] py-3 rounded-lg border-2 border-transparent focus:border-white">BLAZE ORANGE</button>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/80 p-4 rounded-2xl border border-rose-500/20">
+                    <h3 class="text-xs font-black uppercase tracking-widest text-rose-500 mb-4">Danger Zone</h3>
+                    <button onclick="logout()" class="w-full bg-slate-800 text-white font-bold text-sm py-3 rounded-xl mb-3 border border-white/5">Disconnect (Logout)</button>
+                    <button onclick="purgeData()" class="w-full bg-rose-600/20 text-rose-500 font-bold text-sm py-3 rounded-xl border border-rose-500/30">Purge System (Reset All Data)</button>
+                </div>
+            </div>
+        </main>
+
+        <nav id="main-bottom-nav" class="glass-nav-bottom fixed bottom-0 left-0 right-0 h-12 flex justify-around items-center z-50">
+            <button class="nav-item active text-xl" onclick="bukaTab('home')" id="nav-home"><i class="fas fa-home"></i></button>
+            <button class="nav-item text-xl" onclick="bukaTab('explore')" id="nav-explore"><i class="fas fa-search"></i></button>
+            <button class="nav-item text-xl" onclick="bukaTab('post')" id="nav-post"><i class="far fa-plus-square"></i></button>
+            <button class="nav-item text-xl" onclick="bukaTab('reels')" id="nav-reels"><i class="fas fa-video"></i></button>
+            <button class="nav-item w-6 h-6 rounded-full overflow-hidden border border-white/20" onclick="bukaTab('profile')" id="nav-profile">
+                <img id="nav-my-avatar" src="" class="w-full h-full object-cover">
+            </button>
         </nav>
     </div>
 
     <script>
+        // CORE VARIABLES
         let isLoginMode = true;
         let currentUser = JSON.parse(localStorage.getItem('zync_session'));
         let aura = parseInt(localStorage.getItem('zync_aura')) || 0;
+        let currentPostIdForComment = null;
+        let currentTheme = localStorage.getItem('zync_theme') || 'default';
+        
+        // APPLY SAVED THEME
+        document.body.className = currentTheme === 'matrix' ? 'theme-matrix selection:bg-emerald-500/30' : 
+                                  currentTheme === 'blaze' ? 'theme-blaze selection:bg-orange-500/30' : 
+                                  'selection:bg-cyan-500/30';
+
+        // DEFAULT DB SANGAT LENGKAP
         let posts = JSON.parse(localStorage.getItem('zync_db')) || [
-            { id: 1, name: "Zync Core", user: "@zync", avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Zync", content: "Ketuk dua kali untuk Like! #ZyncTheFuture melampaui batas.", likes: 15400, isLiked: false, verified: true }
+            { id: 1, name: "Zync Official", user: "zync", avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Zync", content: "Sistem berevolusi. Hyper-link aktif: buka https://github.com/ikram-cyber sekarang juga! #ZyncIt", img: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&q=80", likes: 8520, isLiked: false, saved: false, verified: true, time: "2 jam yang lalu", comments: [{user: "ikram", text: "Gila keren banget aplikasinya!"}] },
+            { id: 2, name: "Tech Insider", user: "tech_insider", avatar: "https://api.dicebear.com/7.x/shapes/svg?seed=Tech", content: "Mark Zuckerberg dilaporkan panik melihat source code aplikasi ini. 🤣 Dibuat hanya dengan 1 file HTML tapi fiturnya gila. #Cyberpunk #Coding", img: "", likes: 4120, isLiked: false, saved: false, verified: false, time: "5 jam yang lalu", comments: [] }
         ];
 
-        function playSfx(freq = 180) {
-            try { const context = new (window.AudioContext || window.webkitAudioContext)(); const osc = context.createOscillator(); const gain = context.createGain(); osc.type = 'sine'; osc.frequency.setValueAtTime(freq, context.currentTime); gain.gain.setValueAtTime(0.05, context.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, context.currentTime + 0.1); osc.connect(gain); gain.connect(context.destination); osc.start(); osc.stop(context.currentTime + 0.1); } catch(e) {}
-        }
+        let reelsData = [
+            "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&h=1200&fit=crop",
+            "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&h=1200&fit=crop"
+        ];
 
-        // NEURAL AUDIO PULSE
-        function neuralAudioPulse(text) {
-            playSfx(440);
-            setTimeout(() => playSfx(660), 100);
-            setTimeout(() => playSfx(880), 200);
+        // AUDIO ENGINE
+        function playSfx(type = 'tap') {
+            try { 
+                const ctx = new (window.AudioContext || window.webkitAudioContext)(); 
+                const osc = ctx.createOscillator(); 
+                const gain = ctx.createGain(); 
+                osc.type = 'sine'; 
+                osc.frequency.setValueAtTime(type === 'pulse' ? 440 : 150, ctx.currentTime); 
+                if(type === 'pulse') { setTimeout(() => { osc.frequency.setValueAtTime(660, ctx.currentTime); }, 100); setTimeout(() => { osc.frequency.setValueAtTime(880, ctx.currentTime); }, 200); }
+                gain.gain.setValueAtTime(type==='pulse'?0.1:0.05, ctx.currentTime); 
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + (type==='pulse'?0.3:0.1)); 
+                osc.connect(gain); gain.connect(ctx.destination); 
+                osc.start(); osc.stop(ctx.currentTime + (type==='pulse'?0.3:0.1)); 
+            } catch(e) {}
         }
 
         function createParticles() {
             const container = document.getElementById('aura-container');
             if(!container) return;
             container.innerHTML = '';
-            for(let i=0; i < Math.min(aura/10, 50); i++) {
+            for(let i=0; i < Math.min(aura/10, 40); i++) {
                 let p = document.createElement('div');
                 p.className = 'aura-particle';
                 p.style.left = Math.random() * 100 + '%';
@@ -153,108 +321,281 @@
             }
         }
 
+        // AUTH & SETTINGS LOGIC
         function toggleAuth() {
             isLoginMode = !isLoginMode;
             document.getElementById('div-user').classList.toggle('hidden');
-            document.getElementById('auth-title').innerText = isLoginMode ? "Identity Lock" : "Generate Core";
+            document.getElementById('auth-title').innerText = isLoginMode ? "Login ke Matrix" : "Buat Identitas Zync";
+            document.getElementById('auth-btn').innerText = isLoginMode ? "Log In" : "Daftar";
+            document.getElementById('auth-toggle-txt').innerText = isLoginMode ? "Belum punya akun?" : "Sudah punya akun?";
+            document.getElementById('auth-toggle-btn').innerText = isLoginMode ? "Daftar" : "Login";
         }
 
         function handleAuth() {
             const email = document.getElementById('auth-email').value;
             const pass = document.getElementById('auth-pass').value;
             const user = document.getElementById('auth-user').value;
-            if(!email || !pass) return;
+            if(!email || !pass) return alert("Isi data Bos!");
             let users = JSON.parse(localStorage.getItem('zync_users')) || [];
             if(isLoginMode) {
                 const found = users.find(u => u.email === email && u.pass === pass);
-                if(found) { 
-                    localStorage.setItem('zync_session', JSON.stringify(found)); 
-                    location.reload(); 
-                } else alert("Access Denied.");
+                if(found) { localStorage.setItem('zync_session', JSON.stringify(found)); location.reload(); } else alert("Akses Ditolak.");
             } else {
-                users.push({ user, email, pass, avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${user}`, verified: user.toLowerCase().includes('ikram') });
+                if(!user) return alert("Username kosong!");
+                const isVerified = user.toLowerCase().includes('ikram');
+                users.push({ user: user.replace(/\s+/g,'').toLowerCase(), email, pass, avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${user}`, verified: isVerified, name: user, bio: "Membangun ekosistem sosial tanpa batas. 💻⚡" });
                 localStorage.setItem('zync_users', JSON.stringify(users));
-                toggleAuth();
+                alert("Berhasil Daftar!"); toggleAuth();
             }
         }
 
         function logout() { localStorage.removeItem('zync_session'); location.reload(); }
+        
+        function purgeData() {
+            if(confirm("PERINGATAN! Ini akan menghapus semua pengguna, postingan, dan aura. Lanjut?")) {
+                localStorage.clear(); location.reload();
+            }
+        }
 
+        function changeTheme(themeName) {
+            playSfx();
+            localStorage.setItem('zync_theme', themeName);
+            location.reload(); // Reload untuk memastikan semua class dan var CSS ter-apply rapi
+        }
+
+        function saveSettings() {
+            const newBio = document.getElementById('setting-bio').value;
+            currentUser.bio = newBio;
+            localStorage.setItem('zync_session', JSON.stringify(currentUser));
+            // Update in Users DB
+            let users = JSON.parse(localStorage.getItem('zync_users')) || [];
+            let uIndex = users.findIndex(u => u.email === currentUser.email);
+            if(uIndex > -1) { users[uIndex].bio = newBio; localStorage.setItem('zync_users', JSON.stringify(users)); }
+            
+            alert("Matrix Profil Diperbarui!");
+            bukaTab('profile');
+        }
+
+        // NAVIGATION LOGIC
         function bukaTab(tabId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => { n.classList.remove('active'); if(n.id !== 'nav-profile') n.innerHTML = n.innerHTML.replace('fas', 'far'); });
+            
             document.getElementById('p-' + tabId).classList.add('active');
-            if(document.getElementById('nav-'+tabId)) document.getElementById('nav-'+tabId).classList.add('active');
-            if(tabId === 'home') renderFeed();
+            let navIcon = document.getElementById('nav-'+tabId);
+            if(navIcon) { navIcon.classList.add('active'); if(tabId !== 'profile') navIcon.innerHTML = navIcon.innerHTML.replace('far', 'fas'); }
+
+            // Hide/Show Headers & Footers based on tab
+            document.getElementById('main-header').style.display = (tabId === 'reels' || tabId === 'post' || tabId === 'settings') ? 'none' : 'flex';
+            document.getElementById('main-bottom-nav').style.display = (tabId === 'settings') ? 'none' : 'flex';
+            
+            window.scrollTo(0,0);
+            
+            if(tabId === 'home') { renderFeed(); renderStories(); }
+            if(tabId === 'explore') renderExplore();
+            if(tabId === 'reels') renderReels();
+            if(tabId === 'notif') renderNotif();
+            if(tabId === 'settings') { document.getElementById('setting-bio').value = currentUser.bio || ""; }
             if(tabId === 'profile') {
-                document.getElementById('prof-name').innerText = currentUser.user;
+                document.getElementById('prof-name').innerHTML = currentUser.name;
+                document.getElementById('prof-header-name').innerHTML = currentUser.user + (currentUser.verified ? ' <i class="fas fa-check-circle verified-badge"></i>' : '');
+                document.getElementById('prof-bio').innerHTML = currentUser.bio || "Membangun ekosistem sosial tanpa batas. 💻⚡";
                 document.getElementById('aura-val').innerText = aura;
+                
+                let myPosts = posts.filter(p => p.user === currentUser.user);
+                document.getElementById('stat-posts').innerText = myPosts.length;
+                let users = JSON.parse(localStorage.getItem('zync_users')) || [];
+                document.getElementById('stat-followers').innerText = users.length; // Simulasi
+                renderProfileGrid(myPosts);
                 createParticles();
             }
         }
 
+        // RENDER LOGIC
+        function renderStories() {
+            let users = JSON.parse(localStorage.getItem('zync_users')) || [];
+            document.getElementById('story-list').innerHTML = users.slice(0, 8).map(u => `
+                <div class="flex flex-col items-center gap-1 shrink-0" onclick="playSfx()">
+                    <div class="w-16 h-16 rounded-full zync-ring-active"><img src="${u.avatar}" class="w-full h-full rounded-full border-2 border-[#020617] object-cover"></div>
+                    <span class="text-[10px] text-slate-300 truncate w-16 text-center">${u.user}</span>
+                </div>
+            `).join('');
+        }
+
+        function renderNotif() {
+            let users = JSON.parse(localStorage.getItem('zync_users')) || [];
+            let html = '';
+            // Generate dummy notifications based on registered users
+            users.forEach((u, i) => {
+                if(u.user !== currentUser.user && i < 5) {
+                    html += `
+                    <div class="flex items-center gap-4 border-b border-white/5 pb-3">
+                        <img src="${u.avatar}" class="w-10 h-10 rounded-full border border-white/10">
+                        <div class="flex-1">
+                            <p class="text-sm"><span class="font-bold text-white">${u.user}</span> baru saja bergabung dalam jaringan Matrix ZYNC.</p>
+                            <p class="text-[10px] text-slate-500 mt-0.5">Hari ini</p>
+                        </div>
+                        <button class="bg-slate-800 text-white font-bold text-xs px-4 py-1.5 rounded-lg">Ikuti</button>
+                    </div>`;
+                }
+            });
+            if(html === '') html = '<p class="text-slate-500 text-sm text-center mt-10">Belum ada aktivitas radar.</p>';
+            document.getElementById('notif-container').innerHTML = html;
+        }
+
+        function processTextToLink(text) {
+            // Hyper-Link & Smart Tag Engine
+            let linkedText = text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" class="smart-link">$1</a>');
+            linkedText = linkedText.replace(/#(\w+)/g, '<span class="smart-tag">#$1</span>');
+            return linkedText;
+        }
+
         function handleDoubleTap(id, element) {
             const heart = element.querySelector('.center-heart');
-            heart.classList.remove('animate-burst');
-            void heart.offsetWidth;
-            heart.classList.add('animate-burst');
-            playSfx(300);
+            heart.classList.remove('animate-burst'); void heart.offsetWidth; heart.classList.add('animate-burst');
+            playSfx();
             const p = posts.find(x => x.id === id);
             if(p && !p.isLiked) {
-                p.isLiked = true; p.likes++; aura += 20;
-                localStorage.setItem('zync_aura', aura);
-                localStorage.setItem('zync_db', JSON.stringify(posts));
+                p.isLiked = true; p.likes++; aura += 15;
+                localStorage.setItem('zync_aura', aura); localStorage.setItem('zync_db', JSON.stringify(posts));
                 renderFeed();
             }
+        }
+
+        function toggleAction(id, action) {
+            playSfx();
+            const p = posts.find(x => x.id === id);
+            if(p) {
+                if(action === 'like') { p.isLiked = !p.isLiked; p.likes += p.isLiked ? 1 : -1; }
+                if(action === 'save') p.saved = !p.saved;
+                localStorage.setItem('zync_db', JSON.stringify(posts)); renderFeed();
+            }
+        }
+
+        function openComments(id) { currentPostIdForComment = id; const p = posts.find(x => x.id === id); renderComments(p.comments); document.getElementById('comment-modal').classList.add('open'); }
+        function closeComments() { document.getElementById('comment-modal').classList.remove('open'); }
+        
+        function renderComments(comments) {
+            let html = comments.length === 0 ? '<p class="text-center text-slate-500 text-sm mt-4">Jadilah yang pertama merespon sinyal ini.</p>' : '';
+            comments.forEach(c => {
+                html += `<div class="flex gap-3 mb-4"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${c.user}" class="w-8 h-8 rounded-full"><div><span class="font-bold text-sm text-white">${c.user}</span> <span class="text-sm text-slate-300">${c.text}</span><div class="text-[10px] text-slate-500 mt-1 flex gap-3"><span>Baru saja</span><span class="font-bold">Balas</span></div></div></div>`;
+            });
+            document.getElementById('comment-list').innerHTML = html;
+        }
+
+        function postComment() {
+            const input = document.getElementById('comment-input');
+            const txt = input.value.trim();
+            if(!txt || !currentPostIdForComment) return;
+            const p = posts.find(x => x.id === currentPostIdForComment);
+            p.comments.push({user: currentUser.user, text: txt});
+            localStorage.setItem('zync_db', JSON.stringify(posts));
+            input.value = ""; playSfx(); renderComments(p.comments); renderFeed();
         }
 
         function renderFeed() {
             let h = '';
             posts.forEach(p => {
-                let contentWithTags = p.content.replace(/#(\w+)/g, '<span class="smart-tag">#$1</span>');
-                h += `<div class="post-card p-6 flex gap-4" ondblclick="handleDoubleTap(${p.id}, this)">
-                    <i class="fas fa-heart center-heart"></i>
-                    <img src="${p.avatar}" class="w-12 h-12 rounded-[1.2rem] bg-slate-800 shrink-0 shadow-lg">
-                    <div class="flex-1 text-left">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="font-black text-sm text-white">${p.name} ${p.verified ? '<i class="fas fa-check-circle verified-badge"></i>' : ''}</span>
-                            <button onclick="neuralAudioPulse()" class="text-cyan-500 text-[10px] uppercase font-black"><i class="fas fa-wave-square mr-1"></i> Pulse</button>
+                let formattedText = processTextToLink(p.content);
+                h += `
+                <div class="mb-4">
+                    <div class="flex justify-between items-center px-3 py-2">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-full zync-ring-active"><img src="${p.avatar}" class="w-full h-full rounded-full border border-[#020617] object-cover"></div>
+                            <span class="font-bold text-sm text-white">${p.user} ${p.verified ? '<i class="fas fa-check-circle verified-badge"></i>' : ''}</span>
+                            <span class="text-slate-500 text-xs">• ${p.time}</span>
                         </div>
-                        <p class="text-slate-200 text-[14px] leading-relaxed font-medium">${contentWithTags}</p>
-                        ${p.img ? `<img src="${p.img}" class="mt-4 rounded-3xl w-full h-48 object-cover border border-white/5">` : ''}
-                        <div class="flex gap-8 mt-5">
-                            <button onclick="playSfx(); p.isLiked = !p.isLiked; p.likes = p.isLiked?p.likes+1:p.likes-1; localStorage.setItem('zync_db', JSON.stringify(posts)); renderFeed();" class="text-[11px] font-black uppercase ${p.isLiked ? 'is-liked' : 'text-slate-600'}">
-                                <i class="fas fa-heart mr-2"></i> ${p.likes}
-                            </button>
-                            <button class="text-slate-600 text-[11px] font-black uppercase"><i class="fas fa-bolt mr-2"></i> Sync</button>
+                        <i class="fas fa-ellipsis-h text-slate-300" onclick="playSfx('pulse')"></i>
+                    </div>
+                    
+                    <div class="relative w-full bg-slate-900 min-h-[100px] flex items-center justify-center border-y border-white/5" ondblclick="handleDoubleTap(${p.id}, this)">
+                        <i class="fas fa-heart center-heart"></i>
+                        ${p.img ? `<img src="${p.img}" class="w-full h-auto max-h-[500px] object-cover">` : `<p class="p-8 text-center text-lg font-medium">${formattedText}</p>`}
+                    </div>
+
+                    <div class="flex justify-between items-center px-3 py-2 text-xl text-white">
+                        <div class="flex gap-4">
+                            <i class="${p.isLiked ? 'fas is-liked' : 'far'} fa-heart transition-all cursor-pointer" onclick="toggleAction(${p.id}, 'like')"></i>
+                            <i class="far fa-comment cursor-pointer hover:text-cyan-400" onclick="openComments(${p.id})"></i>
+                            <i class="far fa-paper-plane cursor-pointer hover:text-cyan-400" onclick="playSfx('pulse')"></i>
                         </div>
+                        <i class="${p.saved ? 'fas is-saved' : 'far'} fa-bookmark transition-all cursor-pointer" onclick="toggleAction(${p.id}, 'save')"></i>
+                    </div>
+
+                    <div class="px-4 text-sm">
+                        <p class="font-bold mb-1">${p.likes.toLocaleString()} Suka</p>
+                        ${p.img ? `<p><span class="font-bold mr-1">${p.user}</span><span>${formattedText}</span></p>` : ''}
+                        ${p.comments.length > 0 ? `<p class="text-slate-500 mt-1 cursor-pointer" onclick="openComments(${p.id})">Lihat semua ${p.comments.length} komentar</p>` : '<p class="text-slate-500 text-[10px] mt-1">Belum ada komentar.</p>'}
                     </div>
                 </div>`;
             });
             document.getElementById('feed-container').innerHTML = h;
         }
 
-        function kirimPost() {
-            const c = document.getElementById('post-content').value;
-            if(!c) return;
-            playSfx(440); aura += 50; localStorage.setItem('zync_aura', aura);
-            posts.unshift({ id: Date.now(), name: currentUser.user, user: "@"+currentUser.user.toLowerCase(), avatar: currentUser.avatar, content: c, img: document.getElementById('post-img').value, likes: 0, verified: currentUser.verified });
-            localStorage.setItem('zync_db', JSON.stringify(posts));
-            document.getElementById('post-content').value = ""; bukaTab('home');
+        function renderExplore() {
+            let imgs = posts.filter(p => p.img).map(p => `<div class="grid-item" onclick="bukaTab('home')"><img src="${p.img}"></div>`).join('');
+            document.getElementById('explore-grid').innerHTML = imgs + imgs + imgs + imgs; 
+        }
+        
+        function renderProfileGrid(myPosts) {
+            let h = '';
+            myPosts.forEach(p => {
+                if(p.img) h += `<div class="grid-item"><img src="${p.img}"></div>`;
+                else h += `<div class="grid-item flex items-center justify-center p-2 text-center text-[10px] font-bold bg-slate-800 dynamic-text border border-white/5">${p.content.substring(0,30)}...</div>`;
+            });
+            document.getElementById('profile-grid').innerHTML = h;
         }
 
-        setInterval(() => {
-            const now = new Date();
-            const t = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
-            if(document.getElementById('clock-val')) document.getElementById('clock-val').innerText = t;
-        }, 1000);
+        function renderReels() {
+            let h = '';
+            reelsData.forEach(url => {
+                h += `
+                <div class="reel-item">
+                    <img src="${url}" class="w-full h-full object-cover opacity-80">
+                    <div class="absolute bottom-16 left-4 text-white">
+                        <div class="flex items-center gap-2 mb-2">
+                            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Zync" class="w-8 h-8 rounded-full border border-white">
+                            <span class="font-bold text-sm">Zync_Neural</span>
+                            <button class="border border-white text-xs px-2 py-0.5 rounded-lg">Ikuti</button>
+                        </div>
+                        <p class="text-sm">Testing Reels Matrix. #ZyncIt</p>
+                    </div>
+                    <div class="absolute bottom-16 right-4 flex flex-col gap-5 text-white items-center text-2xl drop-shadow-lg">
+                        <div class="flex flex-col items-center"><i class="far fa-heart hover:text-cyan-400" onclick="playSfx()"></i><span class="text-[10px] mt-1">12K</span></div>
+                        <div class="flex flex-col items-center"><i class="far fa-comment"></i><span class="text-[10px] mt-1">450</span></div>
+                        <i class="far fa-paper-plane"></i>
+                        <i class="fas fa-ellipsis-v text-lg"></i>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('reels-container').innerHTML = h;
+        }
+
+        function kirimPost() {
+            const c = document.getElementById('post-content').value;
+            const img = document.getElementById('post-img').value;
+            if(!c && !img) return;
+            playSfx('pulse'); aura += 50; localStorage.setItem('zync_aura', aura);
+            posts.unshift({ 
+                id: Date.now(), name: currentUser.name, user: currentUser.user, avatar: currentUser.avatar, 
+                content: c, img: img, likes: 0, isLiked: false, saved: false, verified: currentUser.verified, time: "Baru saja", comments: [] 
+            });
+            localStorage.setItem('zync_db', JSON.stringify(posts));
+            document.getElementById('post-content').value = ""; document.getElementById('post-img').value = ""; 
+            bukaTab('home');
+        }
 
         window.onload = () => {
             if(currentUser) {
                 document.getElementById('p-auth').style.display = 'none';
                 document.getElementById('main-app').classList.remove('hidden');
-                document.getElementById('my-avatar').src = currentUser.avatar;
+                
+                document.getElementById('nav-my-avatar').src = currentUser.avatar;
+                document.getElementById('my-story-avatar').src = currentUser.avatar;
+                document.getElementById('post-my-avatar').src = currentUser.avatar;
                 document.getElementById('prof-avatar').src = currentUser.avatar;
+                document.getElementById('my-comment-avatar').src = currentUser.avatar;
+                
                 bukaTab('home');
             }
         };
